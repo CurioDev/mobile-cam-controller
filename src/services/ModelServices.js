@@ -1,4 +1,5 @@
 import * as tf from '@tensorflow/tfjs';
+import { setWasmPaths } from '@tensorflow/tfjs-backend-wasm';
 import { DatasetController } from './DatasetController';
 
 export let truncatedMobileNet;
@@ -27,5 +28,9 @@ export const addSampleHandler = (ctx, label) => {
 }
 
 export const init = async () => {
-    truncatedMobileNet = await loadTruncatedMobileNet();
+    setWasmPaths("/tfjs-backend-wasm.wasm");
+    tf.setBackend('wasm').then(async () => {
+        console.log(tf.getBackend());
+        truncatedMobileNet = await loadTruncatedMobileNet();
+    });
 }

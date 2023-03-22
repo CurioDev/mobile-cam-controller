@@ -59,28 +59,34 @@ export default function Training() {
 				<Card.Text style={{fontSize: '2.9vw', marginBottom: '0px'}}>GO FORWARD</Card.Text>
 				<canvas ref={forwardPhotoRef} style={{width: '100%', height: '25vw', backgroundColor: 'black'}}></canvas>
 				<Card.Text style={{marginTop: '0px', fontSize: '2vw'}}>{forwardSampleCount} examples.</Card.Text>
-				<Button onClick={() => addSample('forward')} className='stretched-link' variant="primary" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
+				<Button onClick={() => addSample('forward')} className='stretched-link' variant="success" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
 			</Card>
+
 			<Card className="position-absolute start-0 translate-middle-y" style={{width: '25%', top: '53%'}}>
 				<Card.Text style={{fontSize: '2.9vw', marginBottom: '0px'}}>TURN LEFT</Card.Text>
 				<canvas ref={leftPhotoRef} style={{width: '100%', height: '25vw', backgroundColor: 'black'}}></canvas>
 				<Card.Text style={{marginTop: '0px', fontSize: '2vw'}}>{leftSampleCount} examples.</Card.Text>
-				<Button onClick={() => addSample('left')} className='stretched-link' variant="primary" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
+				<Button onClick={() => addSample('left')} className='stretched-link' variant="success" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
 			</Card>
 
-			<Camera videoRef={videoRef}/>
+			<Card className="position-absolute start-50 translate-middle" style={{width: '48%', top: '53%'}}>
+				<Button onClick={() => addSample('left')} className='stretched-link' variant="primary" size="lg" style={{fontSize: '3.5vw', marginBottom: '4%'}}>SHOW INSTRUCTIONS</Button>
+				<Camera videoRef={videoRef}/>
+				<Button onClick={() => addSample('left')} className='stretched-link' variant="danger" size="lg" style={{fontSize: '3.5vw'}}>TRAIN</Button>
+			</Card>
 			
 			<Card className="position-absolute end-0 translate-middle-y" style={{width: '25%', top: '53%'}}>
 				<Card.Text style={{fontSize: '2.9vw', marginBottom: '0px'}}>TURN RIGHT</Card.Text>
 				<canvas ref={rightPhotoRef} style={{width: '100%', height: '25vw', backgroundColor: 'black'}}></canvas>
 				<Card.Text style={{marginTop: '0px', fontSize: '2vw'}}>{rightSampleCount} examples.</Card.Text>
-				<Button onClick={() => addSample('right')} className='stretched-link' variant="primary" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
+				<Button onClick={() => addSample('right')} className='stretched-link' variant="success" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
 			</Card>
+
 			<Card className="position-absolute bottom-0 start-50 translate-middle-x" style={{width: '25%'}}>
 				<Card.Text style={{fontSize: '2.9vw', marginBottom: '0px'}}>GO BACK</Card.Text>
 				<canvas ref={backPhotoRef} style={{width: '100%', height: '25vw', backgroundColor: 'black'}}></canvas>
 				<Card.Text style={{marginTop: '0px', fontSize: '2vw'}}>{backSampleCount} examples.</Card.Text>
-				<Button onClick={() => addSample('back')} className='stretched-link' variant="primary" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
+				<Button onClick={() => addSample('back')} className='stretched-link' variant="success" size="sm" style={{fontSize: '2.9vw', marginTop: '-17px'}}>ADD SAMPLE</Button>
 			</Card>
 		</>
 	);

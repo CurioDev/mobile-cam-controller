@@ -4,8 +4,7 @@ import { init, truncatedMobileNet } from "./services/ModelServices";
 
 function App() {
 
-	init().then( () => {console.log(truncatedMobileNet);})
-	
+	init();
 
 	return (
 		<div className="App">

@@ -26,7 +26,7 @@ export default function Camera(props) {
 	return (
 		<Container>
 			{isVideoAvailable ?
-			<video ref={props.videoRef} className="position-absolute start-50 translate-middle" style={{width: '48%', top: '53%'}}></video>:
+			<video ref={props.videoRef} style={{width: '100%'}}></video>:
 			<Alert variant="danger" className="position-absolute start-50 translate-middle" style={{width: '48%', top: '53%'}}>
 				<Alert.Heading>Please enable camera access!</Alert.Heading>
 				<hr/>
