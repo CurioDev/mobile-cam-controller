@@ -10,12 +10,11 @@ export default function Dashboard() {
 			id="justify-tab-example"
 			className="mb-3"
 			// transition="false"
-			justify
-		>
+			justify>
 			<Tab eventKey="training" title="Training">
 				<Training />
 			</Tab>
-			<Tab eventKey="play" title="Play">
+			<Tab eventKey="driving" title="Driving">
 				<Training />
 			</Tab>
 		</Tabs>
