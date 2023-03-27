@@ -1,14 +1,13 @@
-import './App.css';
+import "./App.css";
 import Dashboard from "./components/Dashboard";
-import { init, truncatedMobileNet } from "./services/ModelServices";
+import { init } from "./services/ModelServices";
 
 function App() {
-
 	init();
 
 	return (
 		<div className="App">
-			<Dashboard/>
+			<Dashboard />
 		</div>
 	);
 }

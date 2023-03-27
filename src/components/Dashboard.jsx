@@ -1,7 +1,7 @@
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
 
-import Training from './Training';
+import Training from "./Training";
 
 export default function Dashboard() {
 	return (
@@ -10,7 +10,8 @@ export default function Dashboard() {
 			id="justify-tab-example"
 			className="mb-3"
 			// transition="false"
-			justify>
+			justify
+		>
 			<Tab eventKey="training" title="Training">
 				<Training />
 			</Tab>
