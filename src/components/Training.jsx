@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import { Alert, Button, Card, Form } from "react-bootstrap";
 
-import Camera from "./Camera";
+import TrainingCamera from "./TrainingCamera";
 import { addSampleHandler, train } from "../services/ModelServices";
 
-export default function Training() {
+export default function Training(props) {
 	const videoRef = useRef(null);
 	const forwardPhotoRef = useRef(null);
 	const leftPhotoRef = useRef(null);
@@ -61,30 +61,42 @@ export default function Training() {
 		// 0: Forward, 1: Back, 2: Left, 3: Right
 		let label;
 		let photo;
+		let photoDriving;
 		if (position === "forward") {
 			label = 0;
 			photo = forwardPhotoRef.current;
+			photoDriving = props.forwardPhotoRef.current;
 			setForwardSampleCount(forwardSampleCount + 1);
 		} else if (position === "left") {
 			label = 2;
 			photo = leftPhotoRef.current;
+			photoDriving = props.leftPhotoRef.current;
 			setLeftSampleCount(leftSampleCount + 1);
 		} else if (position === "right") {
 			label = 3;
 			photo = rightPhotoRef.current;
+			photoDriving = props.rightPhotoRef.current;
 			setRightSampleCount(rightSampleCount + 1);
 		} else {
 			label = 1;
 			photo = backPhotoRef.current;
+			photoDriving = props.backPhotoRef.current;
 			setBackSampleCount(backSampleCount + 1);
 		}
 
 		let video = videoRef.current;
 		photo.width = width;
 		photo.height = height;
+		photoDriving.width = width;
+		photoDriving.height = height;
 
 		let ctx = photo.getContext("2d");
-		ctx.drawImage(video, 0, 0, width, height);
+		ctx.scale(-1, 1);
+		ctx.drawImage(video, width * -1, 0, width, height);
+
+		let ctxDriving = photoDriving.getContext("2d");
+		ctxDriving.scale(-1, 1);
+		ctxDriving.drawImage(video, width * -1, 0, width, height);
 
 		addSampleHandler(video, label);
 	};
@@ -97,6 +109,7 @@ export default function Training() {
 				dismissible
 			>
 				<Alert.Heading>Oh, you got an error!</Alert.Heading>
+				<hr />
 				<p>Please add some examples before training.</p>
 			</Alert>
 		);
@@ -108,6 +121,7 @@ export default function Training() {
 				dismissible
 			>
 				<Alert.Heading>Oh, you got an error!</Alert.Heading>
+				<hr />
 				<p>
 					Batch size is 0 or NaN. Please choose a non-zero fraction.
 				</p>
@@ -225,7 +239,12 @@ export default function Training() {
 					</Button>
 				</Card>
 
-				<Camera videoRef={videoRef} train={handleTrain} loss={loss} />
+				<TrainingCamera
+					videoRef={videoRef}
+					train={handleTrain}
+					loss={loss}
+					setShowInstructionsAlert={props.setShowInstructionsAlert}
+				/>
 
 				<Card
 					className="position-absolute end-0 translate-middle-y"

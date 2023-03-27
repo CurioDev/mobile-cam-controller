@@ -66,10 +66,10 @@ export const train = (
 		epochs: userEpochs,
 		callbacks: {
 			onBatchEnd: async (batch, logs) => {
-				console.log("Loss: " + logs.loss.toFixed(5));
-				// Sends loss instantly.
-				// ui.trainStatus('Loss: ' + logs.loss.toFixed(5));
-				setLoss("Loss: " + logs.loss.toFixed(5));
+				setLoss("LOSS: " + logs.loss.toFixed(5));
+			},
+			onTrainEnd: async (logs) => {
+				setLoss("TRAIN AGAIN?");
 			},
 		},
 	});

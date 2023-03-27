@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Alert, Card } from "react-bootstrap";
 
-export default function Camera(props) {
+export default function TrainingCamera(props) {
 	const [isVideoAvailable, setIsVideoAvailable] = useState(true);
 
 	useEffect(() => {
@@ -13,9 +13,11 @@ export default function Camera(props) {
 				.then((stream) => {
 					let video = props.videoRef.current;
 					video.srcObject = stream;
+					video.style.transform = "scale(-1, 1)";
 					video.play();
 				})
 				.catch((err) => {
+					console.error(err);
 					setIsVideoAvailable(false);
 				});
 		};
@@ -30,7 +32,7 @@ export default function Camera(props) {
 			{isVideoAvailable ? (
 				<>
 					<Button
-						className="stretched-link"
+						onClick={() => props.setShowInstructionsAlert(true)}
 						variant="primary"
 						size="lg"
 						style={{ fontSize: "3.5vw", marginBottom: "4%" }}
@@ -43,9 +45,7 @@ export default function Camera(props) {
 					></video>
 					<Button
 						onClick={props.train}
-						className="stretched-link"
-						// {props.loss === "" ? variant="success" : props.loss}
-
+						variant={props.loss === "" ? "success" : "warning"}
 						size="lg"
 						style={{ fontSize: "3.5vw", marginTop: "4%" }}
 					>
