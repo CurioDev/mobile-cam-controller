@@ -25,24 +25,29 @@ export default function DrivingCamera(props) {
 	}, [props.videoRef]);
 
 	return (
-		<Card
-			className="position-absolute start-50 translate-middle"
-			style={{ width: "48%", top: "53%" }}
-		>
+		<Card className="start-50 translate-middle-x" style={{ width: "60%" }}>
 			{isVideoAvailable ? (
 				<>
-					<video
-						ref={props.videoRef}
-						style={{ width: "100%" }}
-					></video>
+					<Button
+						onClick={props.handleConnect}
+						variant={props.isConnected ? "danger" : "success"}
+						size="lg"
+						style={{ fontSize: "3.5vw", marginBottom: "4%" }}
+					>
+						{props.isConnected ? "DISCONNECT" : "CONNECT TO ROBOT"}
+					</Button>
 					<Button
 						onClick={props.handlePredict}
 						variant={props.isPredicting ? "danger" : "success"}
 						size="lg"
-						style={{ fontSize: "3.5vw", marginTop: "4%" }}
+						style={{ fontSize: "3.5vw", marginBottom: "4%" }}
 					>
 						{props.isPredicting ? "STOP" : "START"}
 					</Button>
+					<video
+						ref={props.videoRef}
+						style={{ width: "100%" }}
+					></video>
 				</>
 			) : (
 				<Alert

@@ -25,12 +25,20 @@ export default function TrainingCamera(props) {
 	}, [props.videoRef]);
 
 	return (
-		<Card
-			className="position-absolute start-50 translate-middle"
-			style={{ width: "48%", top: "53%" }}
-		>
+		<Card className="start-50 translate-middle-x" style={{ width: "60%" }}>
 			{isVideoAvailable ? (
 				<>
+					<Button
+						onClick={props.train}
+						variant={props.loss === "" ? "success" : "warning"}
+						size="lg"
+						style={{
+							fontSize: "3.5vw",
+							marginBottom: "4%",
+						}}
+					>
+						{props.loss === "" ? <>TRAIN</> : props.loss}
+					</Button>
 					<Button
 						onClick={() => props.setShowInstructionsAlert(true)}
 						variant="primary"
@@ -43,14 +51,6 @@ export default function TrainingCamera(props) {
 						ref={props.videoRef}
 						style={{ width: "100%" }}
 					></video>
-					<Button
-						onClick={props.train}
-						variant={props.loss === "" ? "success" : "warning"}
-						size="lg"
-						style={{ fontSize: "3.5vw", marginTop: "4%" }}
-					>
-						{props.loss === "" ? <>TRAIN</> : props.loss}
-					</Button>
 				</>
 			) : (
 				<Alert

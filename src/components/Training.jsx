@@ -1,5 +1,13 @@
 import React, { useState, useRef } from "react";
-import { Alert, Button, Card, Form } from "react-bootstrap";
+import {
+	Alert,
+	Button,
+	Card,
+	Form,
+	Container,
+	Row,
+	Col,
+} from "react-bootstrap";
 
 import TrainingCamera from "./TrainingCamera";
 import { addSampleHandler, train } from "../services/ModelServices";
@@ -129,233 +137,494 @@ export default function Training(props) {
 		);
 	} else {
 		return (
-			<>
-				<Card className="position-absolute" style={{ width: "30%" }}>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						LEARNING RATE
-					</Card.Text>
-					<Form.Select
-						defaultValue="0.0001"
-						onChange={handleLearningRate}
-						size="sm"
-					>
-						<option value="0.00001">0.00001</option>
-						<option value="0.0001">0.0001</option>
-						<option value="0.001">0.001</option>
-						<option value="0.003">0.003</option>
-					</Form.Select>
-				</Card>
+			<Container fluid style={{ padding: "0px" }}>
+				<Row className="g-1">
+					<Col>
+						<Card>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								LEARNING RATE
+							</Card.Text>
+							<Form.Select
+								defaultValue="0.0001"
+								onChange={handleLearningRate}
+								size="sm"
+							>
+								<option value="0.00001">0.00001</option>
+								<option value="0.0001">0.0001</option>
+								<option value="0.001">0.001</option>
+								<option value="0.003">0.003</option>
+							</Form.Select>
+						</Card>
+					</Col>
+					<Col>
+						<Card>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								BATCH SIZE
+							</Card.Text>
+							<Form.Select
+								defaultValue="0.4"
+								onChange={handleBatchSize}
+								size="sm"
+							>
+								<option value="0.05">0.05</option>
+								<option value="0.1">0.1</option>
+								<option value="0.4">0.4</option>
+								<option value="1">1</option>
+							</Form.Select>
+						</Card>
+					</Col>
+					<Col>
+						<Card>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								EPOCHS
+							</Card.Text>
+							<Form.Select
+								defaultValue="20"
+								onChange={handleEpochs}
+								size="sm"
+							>
+								<option value="10">10</option>
+								<option value="20">20</option>
+								<option value="40">40</option>
+							</Form.Select>
+						</Card>
+					</Col>
+					<Col>
+						<Card>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								HIDDEN UNITS
+							</Card.Text>
+							<Form.Select
+								defaultValue="100"
+								onChange={handleHiddenUnits}
+								size="sm"
+							>
+								<option value="10">10</option>
+								<option value="100">100</option>
+								<option value="200">200</option>
+							</Form.Select>
+						</Card>
+					</Col>
+				</Row>
+				<Row style={{ marginTop: "5%" }}>
+					<Col>
+						<TrainingCamera
+							videoRef={videoRef}
+							train={handleTrain}
+							loss={loss}
+							setShowInstructionsAlert={
+								props.setShowInstructionsAlert
+							}
+						/>
+					</Col>
+				</Row>
+				<Row style={{ marginTop: "5%" }}>
+					<Col>
+						<Card
+							className="start-50 translate-middle-x"
+							style={{ width: "30vw" }}
+						>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								GO FORWARD
+							</Card.Text>
+							<canvas
+								ref={forwardPhotoRef}
+								style={{
+									width: "100%",
+									height: "30vw",
+									backgroundColor: "black",
+								}}
+							></canvas>
+							<Card.Text
+								style={{ marginTop: "0px", fontSize: "2vw" }}
+							>
+								{forwardSampleCount} examples.
+							</Card.Text>
+							<Button
+								onClick={() => addSample("forward")}
+								className="stretched-link"
+								size="sm"
+								style={{
+									fontSize: "2.9vw",
+									marginTop: "-17px",
+									backgroundColor: "steelblue",
+									borderColor: "steelblue",
+								}}
+							>
+								ADD SAMPLE
+							</Button>
+						</Card>
+					</Col>
+				</Row>
+				<Row className="gx-3" style={{ marginTop: "1%" }}>
+					<Col>
+						<Card style={{ width: "30vw" }}>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								TURN LEFT
+							</Card.Text>
+							<canvas
+								ref={leftPhotoRef}
+								style={{
+									width: "100%",
+									height: "30vw",
+									backgroundColor: "black",
+								}}
+							></canvas>
+							<Card.Text
+								style={{ marginTop: "0px", fontSize: "2vw" }}
+							>
+								{leftSampleCount} examples.
+							</Card.Text>
+							<Button
+								onClick={() => addSample("left")}
+								className="stretched-link"
+								size="sm"
+								style={{
+									fontSize: "2.9vw",
+									marginTop: "-17px",
+									backgroundColor: "steelblue",
+									borderColor: "steelblue",
+								}}
+							>
+								ADD SAMPLE
+							</Button>
+						</Card>
+					</Col>
+					<Col>
+						<Card style={{ width: "30vw" }}>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								GO BACK
+							</Card.Text>
+							<canvas
+								ref={backPhotoRef}
+								style={{
+									width: "100%",
+									height: "30vw",
+									backgroundColor: "black",
+								}}
+							></canvas>
+							<Card.Text
+								style={{ marginTop: "0px", fontSize: "2vw" }}
+							>
+								{backSampleCount} examples.
+							</Card.Text>
+							<Button
+								onClick={() => addSample("back")}
+								className="stretched-link"
+								size="sm"
+								style={{
+									fontSize: "2.9vw",
+									marginTop: "-17px",
+									backgroundColor: "steelblue",
+									borderColor: "steelblue",
+								}}
+							>
+								ADD SAMPLE
+							</Button>
+						</Card>
+					</Col>
+					<Col>
+						<Card style={{ width: "30vw" }}>
+							<Card.Text
+								style={{
+									fontSize: "2.9vw",
+									marginBottom: "0px",
+								}}
+							>
+								TURN RIGHT
+							</Card.Text>
+							<canvas
+								ref={rightPhotoRef}
+								style={{
+									width: "100%",
+									height: "30vw",
+									backgroundColor: "black",
+								}}
+							></canvas>
+							<Card.Text
+								style={{ marginTop: "0px", fontSize: "2vw" }}
+							>
+								{rightSampleCount} examples.
+							</Card.Text>
+							<Button
+								onClick={() => addSample("right")}
+								className="stretched-link"
+								size="sm"
+								style={{
+									fontSize: "2.9vw",
+									marginTop: "-17px",
+									backgroundColor: "steelblue",
+									borderColor: "steelblue",
+								}}
+							>
+								ADD SAMPLE
+							</Button>
+						</Card>
+					</Col>
+				</Row>
+			</Container>
+			// <>
+			// 	<Card className="position-absolute" style={{ width: "30%" }}>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			LEARNING RATE
+			// 		</Card.Text>
+			// 		<Form.Select
+			// 			defaultValue="0.0001"
+			// 			onChange={handleLearningRate}
+			// 			size="sm"
+			// 		>
+			// 			<option value="0.00001">0.00001</option>
+			// 			<option value="0.0001">0.0001</option>
+			// 			<option value="0.001">0.001</option>
+			// 			<option value="0.003">0.003</option>
+			// 		</Form.Select>
+			// 	</Card>
 
-				<Card
-					className="position-absolute start-50 translate-middle-x"
-					style={{ width: "25%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						GO FORWARD
-					</Card.Text>
-					<canvas
-						ref={forwardPhotoRef}
-						style={{
-							width: "100%",
-							height: "25vw",
-							backgroundColor: "black",
-						}}
-					></canvas>
-					<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
-						{forwardSampleCount} examples.
-					</Card.Text>
-					<Button
-						onClick={() => addSample("forward")}
-						className="stretched-link"
-						size="sm"
-						style={{
-							fontSize: "2.9vw",
-							marginTop: "-17px",
-							backgroundColor: "steelblue",
-							borderColor: "steelblue",
-						}}
-					>
-						ADD SAMPLE
-					</Button>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute start-50 translate-middle-x"
+			// 		style={{ width: "25%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			GO FORWARD
+			// 		</Card.Text>
+			// 		<canvas
+			// 			ref={forwardPhotoRef}
+			// 			style={{
+			// 				width: "100%",
+			// 				height: "25vw",
+			// 				backgroundColor: "black",
+			// 			}}
+			// 		></canvas>
+			// 		<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
+			// 			{forwardSampleCount} examples.
+			// 		</Card.Text>
+			// 		<Button
+			// 			onClick={() => addSample("forward")}
+			// 			className="stretched-link"
+			// 			size="sm"
+			// 			style={{
+			// 				fontSize: "2.9vw",
+			// 				marginTop: "-17px",
+			// 				backgroundColor: "steelblue",
+			// 				borderColor: "steelblue",
+			// 			}}
+			// 		>
+			// 			ADD SAMPLE
+			// 		</Button>
+			// 	</Card>
 
-				<Card
-					className="position-absolute end-0"
-					style={{ width: "30%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						BATCH SIZE
-					</Card.Text>
-					<Form.Select
-						defaultValue="0.4"
-						onChange={handleBatchSize}
-						size="sm"
-					>
-						<option value="0.05">0.05</option>
-						<option value="0.1">0.1</option>
-						<option value="0.4">0.4</option>
-						<option value="1">1</option>
-					</Form.Select>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute end-0"
+			// 		style={{ width: "30%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			BATCH SIZE
+			// 		</Card.Text>
+			// 		<Form.Select
+			// 			defaultValue="0.4"
+			// 			onChange={handleBatchSize}
+			// 			size="sm"
+			// 		>
+			// 			<option value="0.05">0.05</option>
+			// 			<option value="0.1">0.1</option>
+			// 			<option value="0.4">0.4</option>
+			// 			<option value="1">1</option>
+			// 		</Form.Select>
+			// 	</Card>
 
-				<Card
-					className="position-absolute start-0 translate-middle-y"
-					style={{ width: "25%", top: "53%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						TURN LEFT
-					</Card.Text>
-					<canvas
-						ref={leftPhotoRef}
-						style={{
-							width: "100%",
-							height: "25vw",
-							backgroundColor: "black",
-						}}
-					></canvas>
-					<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
-						{leftSampleCount} examples.
-					</Card.Text>
-					<Button
-						onClick={() => addSample("left")}
-						className="stretched-link"
-						size="sm"
-						style={{
-							fontSize: "2.9vw",
-							marginTop: "-17px",
-							backgroundColor: "steelblue",
-							borderColor: "steelblue",
-						}}
-					>
-						ADD SAMPLE
-					</Button>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute start-0 translate-middle-y"
+			// 		style={{ width: "25%", top: "53%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			TURN LEFT
+			// 		</Card.Text>
+			// 		<canvas
+			// 			ref={leftPhotoRef}
+			// 			style={{
+			// 				width: "100%",
+			// 				height: "25vw",
+			// 				backgroundColor: "black",
+			// 			}}
+			// 		></canvas>
+			// 		<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
+			// 			{leftSampleCount} examples.
+			// 		</Card.Text>
+			// 		<Button
+			// 			onClick={() => addSample("left")}
+			// 			className="stretched-link"
+			// 			size="sm"
+			// 			style={{
+			// 				fontSize: "2.9vw",
+			// 				marginTop: "-17px",
+			// 				backgroundColor: "steelblue",
+			// 				borderColor: "steelblue",
+			// 			}}
+			// 		>
+			// 			ADD SAMPLE
+			// 		</Button>
+			// 	</Card>
 
-				<TrainingCamera
-					videoRef={videoRef}
-					train={handleTrain}
-					loss={loss}
-					setShowInstructionsAlert={props.setShowInstructionsAlert}
-				/>
+			// 	<TrainingCamera
+			// 		videoRef={videoRef}
+			// 		train={handleTrain}
+			// 		loss={loss}
+			// 		setShowInstructionsAlert={props.setShowInstructionsAlert}
+			// 	/>
 
-				<Card
-					className="position-absolute end-0 translate-middle-y"
-					style={{ width: "25%", top: "53%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						TURN RIGHT
-					</Card.Text>
-					<canvas
-						ref={rightPhotoRef}
-						style={{
-							width: "100%",
-							height: "25vw",
-							backgroundColor: "black",
-						}}
-					></canvas>
-					<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
-						{rightSampleCount} examples.
-					</Card.Text>
-					<Button
-						onClick={() => addSample("right")}
-						className="stretched-link"
-						size="sm"
-						style={{
-							fontSize: "2.9vw",
-							marginTop: "-17px",
-							backgroundColor: "steelblue",
-							borderColor: "steelblue",
-						}}
-					>
-						ADD SAMPLE
-					</Button>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute end-0 translate-middle-y"
+			// 		style={{ width: "25%", top: "53%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			TURN RIGHT
+			// 		</Card.Text>
+			// 		<canvas
+			// 			ref={rightPhotoRef}
+			// 			style={{
+			// 				width: "100%",
+			// 				height: "25vw",
+			// 				backgroundColor: "black",
+			// 			}}
+			// 		></canvas>
+			// 		<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
+			// 			{rightSampleCount} examples.
+			// 		</Card.Text>
+			// 		<Button
+			// 			onClick={() => addSample("right")}
+			// 			className="stretched-link"
+			// 			size="sm"
+			// 			style={{
+			// 				fontSize: "2.9vw",
+			// 				marginTop: "-17px",
+			// 				backgroundColor: "steelblue",
+			// 				borderColor: "steelblue",
+			// 			}}
+			// 		>
+			// 			ADD SAMPLE
+			// 		</Button>
+			// 	</Card>
 
-				<Card
-					className="position-absolute start-0"
-					style={{ width: "30%", bottom: "0%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						EPOCHS
-					</Card.Text>
-					<Form.Select
-						defaultValue="20"
-						onChange={handleEpochs}
-						size="sm"
-					>
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="40">40</option>
-					</Form.Select>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute start-0"
+			// 		style={{ width: "30%", bottom: "0%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			EPOCHS
+			// 		</Card.Text>
+			// 		<Form.Select
+			// 			defaultValue="20"
+			// 			onChange={handleEpochs}
+			// 			size="sm"
+			// 		>
+			// 			<option value="10">10</option>
+			// 			<option value="20">20</option>
+			// 			<option value="40">40</option>
+			// 		</Form.Select>
+			// 	</Card>
 
-				<Card
-					className="position-absolute bottom-0 start-50 translate-middle-x"
-					style={{ width: "25%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						GO BACK
-					</Card.Text>
-					<canvas
-						ref={backPhotoRef}
-						style={{
-							width: "100%",
-							height: "25vw",
-							backgroundColor: "black",
-						}}
-					></canvas>
-					<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
-						{backSampleCount} examples.
-					</Card.Text>
-					<Button
-						onClick={() => addSample("back")}
-						className="stretched-link"
-						size="sm"
-						style={{
-							fontSize: "2.9vw",
-							marginTop: "-17px",
-							backgroundColor: "steelblue",
-							borderColor: "steelblue",
-						}}
-					>
-						ADD SAMPLE
-					</Button>
-				</Card>
+			// 	<Card
+			// 		className="position-absolute bottom-0 start-50 translate-middle-x"
+			// 		style={{ width: "25%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			GO BACK
+			// 		</Card.Text>
+			// 		<canvas
+			// 			ref={backPhotoRef}
+			// 			style={{
+			// 				width: "100%",
+			// 				height: "25vw",
+			// 				backgroundColor: "black",
+			// 			}}
+			// 		></canvas>
+			// 		<Card.Text style={{ marginTop: "0px", fontSize: "2vw" }}>
+			// 			{backSampleCount} examples.
+			// 		</Card.Text>
+			// 		<Button
+			// 			onClick={() => addSample("back")}
+			// 			className="stretched-link"
+			// 			size="sm"
+			// 			style={{
+			// 				fontSize: "2.9vw",
+			// 				marginTop: "-17px",
+			// 				backgroundColor: "steelblue",
+			// 				borderColor: "steelblue",
+			// 			}}
+			// 		>
+			// 			ADD SAMPLE
+			// 		</Button>
+			// 	</Card>
 
-				<Card
-					className="position-absolute end-0"
-					style={{ width: "30%", bottom: "0%" }}
-				>
-					<Card.Text
-						style={{ fontSize: "2.9vw", marginBottom: "0px" }}
-					>
-						HIDDEN UNITS
-					</Card.Text>
-					<Form.Select
-						defaultValue="100"
-						onChange={handleHiddenUnits}
-						size="sm"
-					>
-						<option value="10">10</option>
-						<option value="100">100</option>
-						<option value="200">200</option>
-					</Form.Select>
-				</Card>
-			</>
+			// 	<Card
+			// 		className="position-absolute end-0"
+			// 		style={{ width: "30%", bottom: "0%" }}
+			// 	>
+			// 		<Card.Text
+			// 			style={{ fontSize: "2.9vw", marginBottom: "0px" }}
+			// 		>
+			// 			HIDDEN UNITS
+			// 		</Card.Text>
+			// 		<Form.Select
+			// 			defaultValue="100"
+			// 			onChange={handleHiddenUnits}
+			// 			size="sm"
+			// 		>
+			// 			<option value="10">10</option>
+			// 			<option value="100">100</option>
+			// 			<option value="200">200</option>
+			// 		</Form.Select>
+			// 	</Card>
+			// </>
 		);
 	}
 }

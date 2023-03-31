@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@espruino-tools/core": "^1.2.13",
+		"@espruino-tools/transpiler": "^0.0.46",
 		"@tensorflow/tfjs": "^4.2.0",
 		"@tensorflow/tfjs-backend-wasm": "^4.2.0",
 		"@testing-library/jest-dom": "^5.16.5",
@@ -16,7 +18,7 @@
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
-		"wasm": "cp node_modules/@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm.wasm ./public", 
+		"wasm": "cp node_modules/@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm.wasm ./public",
 		"winwasm": "PowerShell -Command cp node_modules/@tensorflow/tfjs-backend-wasm/dist/tfjs-backend-wasm.wasm ./public -Force",
 		"start-mac": "HTTPS=true SSL_CRT_FILE=./.cert/cert.pem SSL_KEY_FILE=./.cert/key.pem react-scripts start",
 		"start-windows": "set HTTPS=true&&set SSL_CRT_FILE=./.cert/cert.crt&&set SSL_KEY_FILE=./.cert/cert.key&&react-scripts start",
