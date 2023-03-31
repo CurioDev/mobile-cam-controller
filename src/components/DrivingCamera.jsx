@@ -36,12 +36,12 @@ export default function DrivingCamera(props) {
 						style={{ width: "100%" }}
 					></video>
 					<Button
-						onClick={props.start}
-						variant={props.loss === "" ? "success" : "warning"} //start stop
+						onClick={props.handlePredict}
+						variant={props.isPredicting ? "danger" : "success"}
 						size="lg"
 						style={{ fontSize: "3.5vw", marginTop: "4%" }}
 					>
-						START
+						{props.isPredicting ? "STOP" : "START"}
 					</Button>
 				</>
 			) : (

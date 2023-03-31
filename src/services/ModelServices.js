@@ -16,7 +16,23 @@ async function loadTruncatedMobileNet() {
 	return tf.model({ inputs: mobileNet.inputs, outputs: layer.output });
 }
 
-export const train = (
+export const addSampleHandler = (camImg, label) => {
+	let img = tf.browser.fromPixels(camImg);
+
+	let processedImg = tf.tidy(() =>
+		img.expandDims(0).toFloat().div(127).sub(1)
+	);
+
+	datasetController.addExample(
+		truncatedMobileNet.predict(processedImg),
+		label
+	);
+
+	img.dispose();
+	processedImg.dispose();
+};
+
+export const train = async (
 	userLearningRate,
 	userBatchSize,
 	userEpochs,
@@ -38,9 +54,9 @@ export const train = (
 			}),
 			tf.layers.dense({
 				units: userHiddenUnits,
+				activation: "relu",
 				kernelInitializer: "varianceScaling",
-				useBias: false,
-				activation: "softmax",
+				useBias: true,
 			}),
 			tf.layers.dense({
 				units: 4,
@@ -61,36 +77,44 @@ export const train = (
 		return;
 	}
 
-	model.fit(datasetController.xs, datasetController.ys, {
-		batchSize,
-		epochs: userEpochs,
-		callbacks: {
-			onBatchEnd: async (batch, logs) => {
-				setLoss("LOSS: " + logs.loss.toFixed(5));
+	await model
+		.fit(datasetController.xs, datasetController.ys, {
+			batchSize,
+			epochs: userEpochs,
+			callbacks: {
+				onBatchEnd: async (batch, logs) => {
+					setLoss("LOSS: " + logs.loss.toFixed(5));
+				},
+				onTrainEnd: async (logs) => {
+					setLoss("TRAIN AGAIN?");
+				},
 			},
-			onTrainEnd: async (logs) => {
-				setLoss("TRAIN AGAIN?");
-			},
-		},
-	});
+		})
+		.then((results) => {
+			console.log(results.history.loss);
+		});
 
 	console.log(model);
 };
 
-export const addSampleHandler = (ctx, label) => {
-	let img = tf.browser.fromPixels(ctx);
+export const predict = async (camImg) => {
+	let img = tf.browser.fromPixels(camImg);
 
 	let processedImg = tf.tidy(() =>
 		img.expandDims(0).toFloat().div(127).sub(1)
 	);
 
-	datasetController.addExample(
-		truncatedMobileNet.predict(processedImg),
-		label
-	);
+	const embeddings = truncatedMobileNet.predict(processedImg);
+
+	const predictions = model.predict(embeddings);
+
+	const predictedClass = predictions.as1D().argMax();
+	const classId = (await predictedClass.data())[0];
 
 	img.dispose();
 	processedImg.dispose();
+
+	return classId;
 };
 
 export const init = async () => {
