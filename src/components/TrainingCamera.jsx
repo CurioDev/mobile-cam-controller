@@ -25,7 +25,10 @@ export default function TrainingCamera(props) {
 	}, [props.videoRef]);
 
 	return (
-		<Card className="start-50 translate-middle-x" style={{ width: "60%" }}>
+		<Card
+			className="start-50 translate-middle-x"
+			style={{ width: "60%", background: "transparent" }}
+		>
 			{isVideoAvailable ? (
 				<>
 					<Button
