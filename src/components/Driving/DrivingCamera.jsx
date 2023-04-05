@@ -50,17 +50,19 @@ export default function DrivingCamera(props) {
 					<video
 						ref={props.videoRef}
 						style={{ width: "100%" }}
+						playsInline
+						autoPlay
+						muted
 					></video>
 				</>
 			) : (
 				<Alert
 					variant="danger"
-					className="position-absolute start-50 translate-middle"
 					style={{
 						fontSize: "3.5vw",
 						width: "100%",
 						top: "53%",
-						paddingBottom: "0px",
+						marginBottom: "0px",
 					}}
 				>
 					<Alert.Heading>Please enable camera access!</Alert.Heading>

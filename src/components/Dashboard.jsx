@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 
 import { Tab, Tabs, Alert } from "react-bootstrap";
 
-import Training from "./Training";
-import Driving from "./Driving";
+import Training from "./Training/Training";
+import Driving from "./Driving/Driving";
 
 export default function Dashboard() {
 	const forwardPhotoRef = useRef(null);

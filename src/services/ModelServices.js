@@ -39,7 +39,8 @@ export const train = async (
 	userHiddenUnits,
 	setLoss,
 	setShowDataAlert,
-	setBatchSizeAlert
+	setBatchSizeAlert,
+	setLossHistory
 ) => {
 	if (datasetController.xs == null) {
 		console.error("Add some examples to train.");
@@ -92,9 +93,8 @@ export const train = async (
 		})
 		.then((results) => {
 			console.log(results.history.loss);
+			setLossHistory(results.history.loss);
 		});
-
-	console.log(model);
 };
 
 export const predict = async (camImg) => {
