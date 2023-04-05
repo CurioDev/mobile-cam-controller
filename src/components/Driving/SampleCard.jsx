@@ -5,7 +5,7 @@ export default function SampleCard(props) {
 		<Card
 			className="start-50 translate-middle-x"
 			style={
-				props.predictedLabel === 0
+				props.isPredicted
 					? {
 							width: "30vw",
 							border: "3px solid",

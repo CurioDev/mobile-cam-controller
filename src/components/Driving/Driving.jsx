@@ -62,7 +62,7 @@ export default function Driving(props) {
 				<Col>
 					<SampleCard
 						title="GO FORWARD"
-						predictedLabel={predictedLabel}
+						isPredicting={predictedLabel === 0}
 						forwardPhotoRef={props.forwardPhotoRef}
 					></SampleCard>
 				</Col>
@@ -71,21 +71,21 @@ export default function Driving(props) {
 				<Col>
 					<SampleCard
 						title="TURN LEFT"
-						predictedLabel={predictedLabel}
+						isPredicting={predictedLabel === 2}
 						forwardPhotoRef={props.leftPhotoRef}
 					></SampleCard>
 				</Col>
 				<Col>
 					<SampleCard
 						title="GO BACK"
-						predictedLabel={predictedLabel}
+						isPredicting={predictedLabel === 1}
 						forwardPhotoRef={props.backPhotoRef}
 					></SampleCard>
 				</Col>
 				<Col>
 					<SampleCard
 						title="TURN RIGHT"
-						predictedLabel={predictedLabel}
+						isPredicting={predictedLabel === 3}
 						forwardPhotoRef={props.rightPhotoRef}
 					></SampleCard>
 				</Col>

@@ -1,4 +1,14 @@
 import { Modal } from "react-bootstrap";
+import {
+	Chart as ChartJS,
+	CategoryScale,
+	LinearScale,
+	PointElement,
+	LineElement,
+	Title,
+	Tooltip,
+	Legend,
+} from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 
 export default function LossChartModal(props) {
