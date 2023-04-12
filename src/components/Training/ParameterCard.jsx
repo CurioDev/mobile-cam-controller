@@ -17,7 +17,9 @@ export default function ParameterCard(props) {
 				size="sm"
 			>
 				{props.selectProps.options.map((option) => (
-					<option value={option}>{option}</option>
+					<option key={option} value={option}>
+						{option}
+					</option>
 				))}
 			</Form.Select>
 		</Card>

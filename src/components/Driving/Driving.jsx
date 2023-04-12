@@ -20,7 +20,9 @@ export default function Driving(props) {
 			intervalId = setInterval(async () => {
 				let labelId = await predict(videoRef.current);
 				setPredictedLabel(labelId);
-				moveCar(labelId);
+				if (isConnected) {
+					moveCar(labelId);
+				}
 			}, 1000);
 		}
 
@@ -62,7 +64,8 @@ export default function Driving(props) {
 				<Col>
 					<SampleCard
 						title="GO FORWARD"
-						isPredicting={predictedLabel === 0}
+						predictedLabel={predictedLabel}
+						cardLabel={0}
 						forwardPhotoRef={props.forwardPhotoRef}
 					></SampleCard>
 				</Col>
@@ -71,21 +74,24 @@ export default function Driving(props) {
 				<Col>
 					<SampleCard
 						title="TURN LEFT"
-						isPredicting={predictedLabel === 2}
+						predictedLabel={predictedLabel}
+						cardLabel={2}
 						forwardPhotoRef={props.leftPhotoRef}
 					></SampleCard>
 				</Col>
 				<Col>
 					<SampleCard
 						title="GO BACK"
-						isPredicting={predictedLabel === 1}
+						predictedLabel={predictedLabel}
+						cardLabel={1}
 						forwardPhotoRef={props.backPhotoRef}
 					></SampleCard>
 				</Col>
 				<Col>
 					<SampleCard
 						title="TURN RIGHT"
-						isPredicting={predictedLabel === 3}
+						predictedLabel={predictedLabel}
+						cardLabel={3}
 						forwardPhotoRef={props.rightPhotoRef}
 					></SampleCard>
 				</Col>

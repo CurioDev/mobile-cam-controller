@@ -6,6 +6,7 @@ import AddSampleCard from "./AddSampleCard";
 import { addSampleHandler, train } from "../../services/ModelServices";
 import ParameterCard from "./ParameterCard";
 import LossChartModal from "./LossChartModal";
+import EditImagesModal from "./EditImagesModal";
 
 export default function Training(props) {
 	const videoRef = useRef(null);
@@ -13,6 +14,11 @@ export default function Training(props) {
 	const leftPhotoRef = useRef(null);
 	const rightPhotoRef = useRef(null);
 	const backPhotoRef = useRef(null);
+
+	const forwardPhotoCurrentList = useRef([]);
+	const leftPhotoCurrentList = useRef([]);
+	const rightPhotoCurrentList = useRef([]);
+	const backPhotoCurrentList = useRef([]);
 
 	const [forwardSampleCount, setForwardSampleCount] = useState(0);
 	const [leftSampleCount, setLeftSampleCount] = useState(0);
@@ -29,6 +35,8 @@ export default function Training(props) {
 	const [loss, setLoss] = useState("");
 	const [lossHistory, setLossHistory] = useState([]);
 	const [showLossCurve, setShowLossCurve] = useState(false);
+
+	const [showEditImages, setShowEditImages] = useState("none");
 
 	const handleLearningRate = (e) => {
 		setLearningRate(e.target.value);
@@ -90,7 +98,7 @@ export default function Training(props) {
 			setBackSampleCount(backSampleCount + 1);
 		}
 
-		let video = videoRef.current;
+		const video = videoRef.current;
 		photo.width = width;
 		photo.height = height;
 		photoDriving.width = width;
@@ -104,7 +112,34 @@ export default function Training(props) {
 		ctxDriving.scale(-1, 1);
 		ctxDriving.drawImage(video, width * -1, 0, width, height);
 
+		if (position === "forward") {
+			forwardPhotoCurrentList.current.push(photo.toDataURL());
+		} else if (position === "left") {
+			leftPhotoCurrentList.current.push(photo.toDataURL());
+		} else if (position === "right") {
+			rightPhotoCurrentList.current.push(photo.toDataURL());
+		} else {
+			backPhotoCurrentList.current.push(photo.toDataURL());
+		}
+
 		addSampleHandler(video, label);
+	};
+
+	const handleShowAllPhotos = (position) => {
+		setShowEditImages(position);
+		// if (forwardPhotoCurrentList.current.length > 3) {
+		// 	// Create an anchor, and set the href value to our data URL
+		// 	const createEl = document.createElement("a");
+		// 	createEl.href = forwardPhotoCurrentList.current[3];
+		// 	console.log(position, forwardPhotoCurrentList.current[3]);
+
+		// 	// This is the name of our downloaded file
+		// 	createEl.download = "download-this-canvas";
+
+		// 	// Click the download button, causing a download, and then remove it
+		// 	createEl.click();
+		// 	createEl.remove();
+		// }
 	};
 
 	useEffect(() => {
@@ -147,6 +182,19 @@ export default function Training(props) {
 					showLossCurve={showLossCurve}
 					setShowLossCurve={setShowLossCurve}
 				></LossChartModal>
+				<EditImagesModal
+					imageList={
+						showEditImages === "forward"
+							? forwardPhotoCurrentList.current
+							: showEditImages === "left"
+							? leftPhotoCurrentList.current
+							: showEditImages === "right"
+							? rightPhotoCurrentList.current
+							: backPhotoCurrentList.current
+					}
+					showEditImages={showEditImages}
+					setShowEditImages={setShowEditImages}
+				></EditImagesModal>
 				<Row className="g-1">
 					<Col>
 						<ParameterCard
@@ -213,6 +261,7 @@ export default function Training(props) {
 							title={"GO FORWARD"}
 							photoRef={forwardPhotoRef}
 							sampleCount={forwardSampleCount}
+							showAllPhotos={handleShowAllPhotos}
 							addSample={addSample}
 						></AddSampleCard>
 					</Col>

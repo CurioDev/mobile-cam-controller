@@ -23,8 +23,21 @@ export default function AddSampleCard(props) {
 				{props.sampleCount} examples.
 			</Card.Text>
 			<Button
+				onClick={() => props.showAllPhotos(props.type)}
+				//className="stretched-link"
+				size="sm"
+				style={{
+					fontSize: "2.9vw",
+					marginTop: "-17px",
+					backgroundColor: "steelblue",
+					borderColor: "steelblue",
+				}}
+			>
+				SHOW ALL PHOTOS
+			</Button>
+			<Button
 				onClick={() => props.addSample(props.type)}
-				className="stretched-link"
+				//className="stretched-link"
 				size="sm"
 				style={{
 					fontSize: "2.9vw",
