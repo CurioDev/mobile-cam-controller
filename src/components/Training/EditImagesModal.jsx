@@ -26,6 +26,7 @@ export default function EditImagesModal(props) {
 			size="lg"
 			aria-labelledby="contained-modal-title-vcenter"
 			centered
+			scrollable
 		>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
@@ -33,29 +34,35 @@ export default function EditImagesModal(props) {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<Container className="g-0 overflowY-auto">
-					<Row>
-						{props.imageList.map((image, index) => (
-							<Col>
-								<Card style={{ width: "24vw" }}>
-									<Image src={image} />
-									<Button
-										//onClick={() => props.addSample(props.type)}
-										size="sm"
-										style={{
-											fontSize: "2.9vw",
-											marginTop: "-17px",
-											backgroundColor: "darkred",
-											borderColor: "darkred",
-										}}
-									>
-										DELETE
-									</Button>
-								</Card>
-							</Col>
-						))}
-					</Row>
-				</Container>
+				{props.imageList.length > 0 ? (
+					<Container className="g-0 overflowY-auto">
+						<Row xs={3}>
+							{props.imageList.map((image, index) => (
+								<Col key={index} style={{ marginTop: "10px" }}>
+									<Card>
+										<Image src={image} />
+										<Button
+											onClick={() =>
+												props.deleteSample(index)
+											}
+											size="sm"
+											style={{
+												fontSize: "2.9vw",
+												marginTop: "-17px",
+												backgroundColor: "darkred",
+												borderColor: "darkred",
+											}}
+										>
+											DELETE
+										</Button>
+									</Card>
+								</Col>
+							))}
+						</Row>
+					</Container>
+				) : (
+					"NO IMAGES"
+				)}
 			</Modal.Body>
 		</Modal>
 	);

@@ -2,7 +2,7 @@ import { Card, Button } from "react-bootstrap";
 
 export default function AddSampleCard(props) {
 	return (
-		<Card className="start-50 translate-middle-x" style={{ width: "30vw" }}>
+		<Card>
 			<Card.Text
 				style={{
 					fontSize: "2.9vw",
@@ -24,24 +24,22 @@ export default function AddSampleCard(props) {
 			</Card.Text>
 			<Button
 				onClick={() => props.showAllPhotos(props.type)}
-				//className="stretched-link"
 				size="sm"
 				style={{
 					fontSize: "2.9vw",
-					marginTop: "-17px",
+					marginTop: "-16px",
 					backgroundColor: "steelblue",
 					borderColor: "steelblue",
 				}}
 			>
-				SHOW ALL PHOTOS
+				EDIT IMAGES
 			</Button>
 			<Button
 				onClick={() => props.addSample(props.type)}
-				//className="stretched-link"
 				size="sm"
 				style={{
 					fontSize: "2.9vw",
-					marginTop: "-17px",
+					marginTop: "1%",
 					backgroundColor: "steelblue",
 					borderColor: "steelblue",
 				}}

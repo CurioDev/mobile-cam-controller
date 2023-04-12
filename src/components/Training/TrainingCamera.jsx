@@ -37,7 +37,7 @@ export default function TrainingCamera(props) {
 						size="lg"
 						style={{
 							fontSize: "3.5vw",
-							marginBottom: "4%",
+							marginBottom: "1%",
 						}}
 					>
 						{props.loss === "" ? <>TRAIN</> : props.loss}
@@ -46,7 +46,7 @@ export default function TrainingCamera(props) {
 						onClick={() => props.setShowInstructionsAlert(true)}
 						variant="primary"
 						size="lg"
-						style={{ fontSize: "3.5vw", marginBottom: "4%" }}
+						style={{ fontSize: "3.5vw", marginBottom: "1%" }}
 					>
 						SHOW INSTRUCTIONS
 					</Button>

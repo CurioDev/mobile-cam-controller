@@ -15,15 +15,10 @@ export default function Training(props) {
 	const rightPhotoRef = useRef(null);
 	const backPhotoRef = useRef(null);
 
-	const forwardPhotoCurrentList = useRef([]);
-	const leftPhotoCurrentList = useRef([]);
-	const rightPhotoCurrentList = useRef([]);
-	const backPhotoCurrentList = useRef([]);
-
-	const [forwardSampleCount, setForwardSampleCount] = useState(0);
-	const [leftSampleCount, setLeftSampleCount] = useState(0);
-	const [rightSampleCount, setRightSampleCount] = useState(0);
-	const [backSampleCount, setBackSampleCount] = useState(0);
+	const [forwardImageList, setForwardImageList] = useState([]);
+	const [leftImageList, setLeftImageList] = useState([]);
+	const [rightImageList, setRightImageList] = useState([]);
+	const [backImageList, setBackImageList] = useState([]);
 
 	const [learningRate, setLearningRate] = useState(0.0001);
 	const [batchSize, setBatchSize] = useState(0.4);
@@ -80,22 +75,18 @@ export default function Training(props) {
 			label = 0;
 			photo = forwardPhotoRef.current;
 			photoDriving = props.forwardPhotoRef.current;
-			setForwardSampleCount(forwardSampleCount + 1);
 		} else if (position === "left") {
 			label = 2;
 			photo = leftPhotoRef.current;
 			photoDriving = props.leftPhotoRef.current;
-			setLeftSampleCount(leftSampleCount + 1);
 		} else if (position === "right") {
 			label = 3;
 			photo = rightPhotoRef.current;
 			photoDriving = props.rightPhotoRef.current;
-			setRightSampleCount(rightSampleCount + 1);
 		} else {
 			label = 1;
 			photo = backPhotoRef.current;
 			photoDriving = props.backPhotoRef.current;
-			setBackSampleCount(backSampleCount + 1);
 		}
 
 		const video = videoRef.current;
@@ -107,31 +98,137 @@ export default function Training(props) {
 		let ctx = photo.getContext("2d");
 		ctx.scale(-1, 1);
 		ctx.drawImage(video, width * -1, 0, width, height);
+		ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 		let ctxDriving = photoDriving.getContext("2d");
 		ctxDriving.scale(-1, 1);
 		ctxDriving.drawImage(video, width * -1, 0, width, height);
+		ctxDriving.setTransform(1, 0, 0, 1, 0, 0);
 
 		if (position === "forward") {
-			forwardPhotoCurrentList.current.push(photo.toDataURL());
+			setForwardImageList((oldList) => [...oldList, photo.toDataURL()]);
 		} else if (position === "left") {
-			leftPhotoCurrentList.current.push(photo.toDataURL());
+			setLeftImageList((oldList) => [...oldList, photo.toDataURL()]);
 		} else if (position === "right") {
-			rightPhotoCurrentList.current.push(photo.toDataURL());
+			setRightImageList((oldList) => [...oldList, photo.toDataURL()]);
 		} else {
-			backPhotoCurrentList.current.push(photo.toDataURL());
+			setBackImageList((oldList) => [...oldList, photo.toDataURL()]);
 		}
 
 		addSampleHandler(video, label);
 	};
 
+	const deleteSample = (index) => {
+		if (showEditImages === "forward") {
+			if (index === 0 && forwardImageList.length === 1) {
+				let ctx = forwardPhotoRef.current.getContext("2d");
+				ctx.fillStyle = "black";
+				ctx.fillRect(0, 0, 224, 224);
+
+				let ctxDriving = props.forwardPhotoRef.current.getContext("2d");
+				ctxDriving.fillStyle = "black";
+				ctxDriving.fillRect(0, 0, 224, 224);
+			} else if (index === forwardImageList.length - 1) {
+				var tempImage = new Image();
+				tempImage.onload = function () {
+					let ctx = forwardPhotoRef.current.getContext("2d");
+					ctx.drawImage(tempImage, 0, 0);
+
+					let ctxDriving =
+						props.forwardPhotoRef.current.getContext("2d");
+					ctxDriving.drawImage(tempImage, 0, 0);
+				};
+				tempImage.src = forwardImageList[index - 1];
+			}
+
+			setForwardImageList((images) =>
+				images.filter((image, imageindex) => imageindex !== index)
+			);
+		} else if (showEditImages === "left") {
+			if (index === 0 && leftImageList.length === 1) {
+				let ctx = leftPhotoRef.current.getContext("2d");
+				ctx.fillStyle = "black";
+				ctx.fillRect(0, 0, 224, 224);
+
+				let ctxDriving = props.leftPhotoRef.current.getContext("2d");
+				ctxDriving.fillStyle = "black";
+				ctxDriving.fillRect(0, 0, 224, 224);
+			} else if (index === leftImageList.length - 1) {
+				var tempImage = new Image();
+				tempImage.onload = function () {
+					let ctx = leftPhotoRef.current.getContext("2d");
+					ctx.drawImage(tempImage, 0, 0);
+
+					let ctxDriving =
+						props.leftPhotoRef.current.getContext("2d");
+					ctxDriving.drawImage(tempImage, 0, 0);
+				};
+				tempImage.src = leftImageList[index - 1];
+			}
+
+			setLeftImageList((images) =>
+				images.filter((image, imageindex) => imageindex !== index)
+			);
+		} else if (showEditImages === "right") {
+			if (index === 0 && rightImageList.length === 1) {
+				let ctx = rightPhotoRef.current.getContext("2d");
+				ctx.fillStyle = "black";
+				ctx.fillRect(0, 0, 224, 224);
+
+				let ctxDriving = props.rightPhotoRef.current.getContext("2d");
+				ctxDriving.fillStyle = "black";
+				ctxDriving.fillRect(0, 0, 224, 224);
+			} else if (index === rightImageList.length - 1) {
+				var tempImage = new Image();
+				tempImage.onload = function () {
+					let ctx = rightPhotoRef.current.getContext("2d");
+					ctx.drawImage(tempImage, 0, 0);
+
+					let ctxDriving =
+						props.rightPhotoRef.current.getContext("2d");
+					ctxDriving.drawImage(tempImage, 0, 0);
+				};
+				tempImage.src = rightImageList[index - 1];
+			}
+
+			setRightImageList((images) =>
+				images.filter((image, imageindex) => imageindex !== index)
+			);
+		} else if (showEditImages === "back") {
+			if (index === 0 && backImageList.length === 1) {
+				let ctx = backPhotoRef.current.getContext("2d");
+				ctx.fillStyle = "black";
+				ctx.fillRect(0, 0, 224, 224);
+
+				let ctxDriving = props.backPhotoRef.current.getContext("2d");
+				ctxDriving.fillStyle = "black";
+				ctxDriving.fillRect(0, 0, 224, 224);
+			} else if (index === backImageList.length - 1) {
+				var tempImage = new Image();
+				tempImage.onload = function () {
+					let ctx = backPhotoRef.current.getContext("2d");
+					ctx.drawImage(tempImage, 0, 0);
+
+					let ctxDriving =
+						props.backPhotoRef.current.getContext("2d");
+					ctxDriving.drawImage(tempImage, 0, 0);
+				};
+				tempImage.src = backImageList[index - 1];
+			}
+
+			setBackImageList((images) =>
+				images.filter((image, imageindex) => imageindex !== index)
+			);
+		}
+	};
+
 	const handleShowAllPhotos = (position) => {
 		setShowEditImages(position);
-		// if (forwardPhotoCurrentList.current.length > 3) {
+		// if (forwardImageList.current.length > 3) {
 		// 	// Create an anchor, and set the href value to our data URL
 		// 	const createEl = document.createElement("a");
-		// 	createEl.href = forwardPhotoCurrentList.current[3];
-		// 	console.log(position, forwardPhotoCurrentList.current[3]);
+		// 	createEl.href = forwardImageList.current[3];
+		// 	console.log(position, forwardImageList.current[3]);
 
 		// 	// This is the name of our downloaded file
 		// 	createEl.download = "download-this-canvas";
@@ -185,15 +282,16 @@ export default function Training(props) {
 				<EditImagesModal
 					imageList={
 						showEditImages === "forward"
-							? forwardPhotoCurrentList.current
+							? forwardImageList
 							: showEditImages === "left"
-							? leftPhotoCurrentList.current
+							? leftImageList
 							: showEditImages === "right"
-							? rightPhotoCurrentList.current
-							: backPhotoCurrentList.current
+							? rightImageList
+							: backImageList
 					}
 					showEditImages={showEditImages}
 					setShowEditImages={setShowEditImages}
+					deleteSample={deleteSample}
 				></EditImagesModal>
 				<Row className="g-1">
 					<Col>
@@ -242,7 +340,7 @@ export default function Training(props) {
 						></ParameterCard>
 					</Col>
 				</Row>
-				<Row style={{ marginTop: "5%" }}>
+				<Row style={{ marginTop: "2%" }}>
 					<Col>
 						<TrainingCamera
 							videoRef={videoRef}
@@ -254,25 +352,28 @@ export default function Training(props) {
 						/>
 					</Col>
 				</Row>
-				<Row style={{ marginTop: "5%" }}>
+				<Row xs={3} className="gx-3" style={{ marginTop: "2%" }}>
+					<Col></Col>
 					<Col>
 						<AddSampleCard
 							type={"forward"}
 							title={"GO FORWARD"}
 							photoRef={forwardPhotoRef}
-							sampleCount={forwardSampleCount}
+							sampleCount={forwardImageList.length}
 							showAllPhotos={handleShowAllPhotos}
 							addSample={addSample}
 						></AddSampleCard>
 					</Col>
+					<Col></Col>
 				</Row>
-				<Row className="gx-3" style={{ marginTop: "1%" }}>
+				<Row xs={3} className="gx-3" style={{ marginTop: "1%" }}>
 					<Col>
 						<AddSampleCard
 							type={"left"}
 							title={"TURN LEFT"}
 							photoRef={leftPhotoRef}
-							sampleCount={leftSampleCount}
+							sampleCount={leftImageList.length}
+							showAllPhotos={handleShowAllPhotos}
 							addSample={addSample}
 						></AddSampleCard>
 					</Col>
@@ -281,7 +382,8 @@ export default function Training(props) {
 							type={"back"}
 							title={"GO BACK"}
 							photoRef={backPhotoRef}
-							sampleCount={backSampleCount}
+							sampleCount={backImageList.length}
+							showAllPhotos={handleShowAllPhotos}
 							addSample={addSample}
 						></AddSampleCard>
 					</Col>
@@ -290,7 +392,8 @@ export default function Training(props) {
 							type={"right"}
 							title={"TURN RIGHT"}
 							photoRef={rightPhotoRef}
-							sampleCount={rightSampleCount}
+							sampleCount={rightImageList.length}
+							showAllPhotos={handleShowAllPhotos}
 							addSample={addSample}
 						></AddSampleCard>
 					</Col>
