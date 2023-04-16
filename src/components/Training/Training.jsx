@@ -50,17 +50,69 @@ export default function Training(props) {
 	};
 
 	const handleTrain = () => {
-		train(
-			learningRate,
-			batchSize,
-			epochs,
-			hiddenUnits,
-			setLoss,
-			setShowDataAlert,
-			setShowBatchSizeAlert,
-			setLossHistory
+		// if I use the list method I should clear the dataset first here.
+		let forwardLoadpromises = forwardImageList.map((url) =>
+			loadImageFromBase64(url, 0)
 		);
+
+		Promise.all(forwardLoadpromises)
+			.then(() => {
+				let leftLoadpromises = leftImageList.map((url) =>
+					loadImageFromBase64(url, 2)
+				);
+				Promise.all(leftLoadpromises)
+					.then(() => {
+						let rightLoadpromises = rightImageList.map((url) =>
+							loadImageFromBase64(url, 3)
+						);
+						Promise.all(rightLoadpromises)
+							.then(() => {
+								let backLoadpromises = backImageList.map(
+									(url) => loadImageFromBase64(url, 1)
+								);
+								Promise.all(backLoadpromises)
+									.then(() => {
+										train(
+											learningRate,
+											batchSize,
+											epochs,
+											hiddenUnits,
+											setLoss,
+											setShowDataAlert,
+											setShowBatchSizeAlert,
+											setLossHistory
+										);
+									})
+									.catch(function (err) {
+										console.log(
+											"One or more images did not load"
+										);
+									});
+							})
+							.catch(function (err) {
+								console.log("One or more images did not load");
+							});
+					})
+					.catch(function (err) {
+						console.log("One or more images did not load");
+					});
+			})
+			.catch(function (err) {
+				console.log("One or more images did not load");
+			});
 	};
+
+	function loadImageFromBase64(url, label) {
+		return new Promise(function (resolve, reject) {
+			var img = new Image();
+			img.src = url;
+			img.onload = function () {
+				//addSampleHandler(img, label);
+				resolve(img);
+			};
+			img.onerror = reject;
+		});
+	}
 
 	const addSample = (position) => {
 		const width = 224;
@@ -224,19 +276,6 @@ export default function Training(props) {
 
 	const handleShowAllPhotos = (position) => {
 		setShowEditImages(position);
-		// if (forwardImageList.current.length > 3) {
-		// 	// Create an anchor, and set the href value to our data URL
-		// 	const createEl = document.createElement("a");
-		// 	createEl.href = forwardImageList.current[3];
-		// 	console.log(position, forwardImageList.current[3]);
-
-		// 	// This is the name of our downloaded file
-		// 	createEl.download = "download-this-canvas";
-
-		// 	// Click the download button, causing a download, and then remove it
-		// 	createEl.click();
-		// 	createEl.remove();
-		// }
 	};
 
 	useEffect(() => {
@@ -343,6 +382,12 @@ export default function Training(props) {
 				<Row style={{ marginTop: "2%" }}>
 					<Col>
 						<TrainingCamera
+							buttonDisabled={
+								forwardImageList.length === 0 ||
+								leftImageList.length === 0 ||
+								rightImageList.length === 0 ||
+								backImageList.length === 0
+							}
 							videoRef={videoRef}
 							train={handleTrain}
 							loss={loss}
