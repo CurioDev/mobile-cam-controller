@@ -3,7 +3,11 @@ import { Alert, Col, Container, Row } from "react-bootstrap";
 
 import TrainingCamera from "./TrainingCamera";
 import AddSampleCard from "./AddSampleCard";
-import { addSampleHandler, train } from "../../services/ModelServices";
+import {
+	addSampleHandler,
+	deleteSampleHandler,
+	train,
+} from "../../services/ModelServices";
 import ParameterCard from "./ParameterCard";
 import LossChartModal from "./LossChartModal";
 import EditImagesModal from "./EditImagesModal";
@@ -14,6 +18,8 @@ export default function Training(props) {
 	const leftPhotoRef = useRef(null);
 	const rightPhotoRef = useRef(null);
 	const backPhotoRef = useRef(null);
+
+	const [photoIndex, setPhotoIndex] = useState(0);
 
 	const [forwardImageList, setForwardImageList] = useState([]);
 	const [leftImageList, setLeftImageList] = useState([]);
@@ -50,56 +56,66 @@ export default function Training(props) {
 	};
 
 	const handleTrain = () => {
-		// if I use the list method I should clear the dataset first here.
-		let forwardLoadpromises = forwardImageList.map((url) =>
-			loadImageFromBase64(url, 0)
+		train(
+			learningRate,
+			batchSize,
+			epochs,
+			hiddenUnits,
+			setLoss,
+			setShowDataAlert,
+			setShowBatchSizeAlert,
+			setLossHistory
 		);
+		// // if I use the list method I should clear the dataset first here.
+		// let forwardLoadpromises = forwardImageList.map((url) =>
+		// 	loadImageFromBase64(url, 0)
+		// );
 
-		Promise.all(forwardLoadpromises)
-			.then(() => {
-				let leftLoadpromises = leftImageList.map((url) =>
-					loadImageFromBase64(url, 2)
-				);
-				Promise.all(leftLoadpromises)
-					.then(() => {
-						let rightLoadpromises = rightImageList.map((url) =>
-							loadImageFromBase64(url, 3)
-						);
-						Promise.all(rightLoadpromises)
-							.then(() => {
-								let backLoadpromises = backImageList.map(
-									(url) => loadImageFromBase64(url, 1)
-								);
-								Promise.all(backLoadpromises)
-									.then(() => {
-										train(
-											learningRate,
-											batchSize,
-											epochs,
-											hiddenUnits,
-											setLoss,
-											setShowDataAlert,
-											setShowBatchSizeAlert,
-											setLossHistory
-										);
-									})
-									.catch(function (err) {
-										console.log(
-											"One or more images did not load"
-										);
-									});
-							})
-							.catch(function (err) {
-								console.log("One or more images did not load");
-							});
-					})
-					.catch(function (err) {
-						console.log("One or more images did not load");
-					});
-			})
-			.catch(function (err) {
-				console.log("One or more images did not load");
-			});
+		// Promise.all(forwardLoadpromises)
+		// 	.then(() => {
+		// 		let leftLoadpromises = leftImageList.map((url) =>
+		// 			loadImageFromBase64(url, 2)
+		// 		);
+		// 		Promise.all(leftLoadpromises)
+		// 			.then(() => {
+		// 				let rightLoadpromises = rightImageList.map((url) =>
+		// 					loadImageFromBase64(url, 3)
+		// 				);
+		// 				Promise.all(rightLoadpromises)
+		// 					.then(() => {
+		// 						let backLoadpromises = backImageList.map(
+		// 							(url) => loadImageFromBase64(url, 1)
+		// 						);
+		// 						Promise.all(backLoadpromises)
+		// 							.then(() => {
+		// 								train(
+		// 									learningRate,
+		// 									batchSize,
+		// 									epochs,
+		// 									hiddenUnits,
+		// 									setLoss,
+		// 									setShowDataAlert,
+		// 									setShowBatchSizeAlert,
+		// 									setLossHistory
+		// 								);
+		// 							})
+		// 							.catch(function (err) {
+		// 								console.log(
+		// 									"One or more images did not load"
+		// 								);
+		// 							});
+		// 					})
+		// 					.catch(function (err) {
+		// 						console.log("One or more images did not load");
+		// 					});
+		// 			})
+		// 			.catch(function (err) {
+		// 				console.log("One or more images did not load");
+		// 			});
+		// 	})
+		// 	.catch(function (err) {
+		// 		console.log("One or more images did not load");
+		// 	});
 	};
 
 	function loadImageFromBase64(url, label) {
@@ -157,14 +173,20 @@ export default function Training(props) {
 		ctxDriving.drawImage(video, width * -1, 0, width, height);
 		ctxDriving.setTransform(1, 0, 0, 1, 0, 0);
 
+		const photoObject = {
+			index: photoIndex,
+			data: photo.toDataURL(),
+		};
+		setPhotoIndex(photoIndex + 1);
+
 		if (position === "forward") {
-			setForwardImageList((oldList) => [...oldList, photo.toDataURL()]);
+			setForwardImageList((oldList) => [...oldList, photoObject]);
 		} else if (position === "left") {
-			setLeftImageList((oldList) => [...oldList, photo.toDataURL()]);
+			setLeftImageList((oldList) => [...oldList, photoObject]);
 		} else if (position === "right") {
-			setRightImageList((oldList) => [...oldList, photo.toDataURL()]);
+			setRightImageList((oldList) => [...oldList, photoObject]);
 		} else {
-			setBackImageList((oldList) => [...oldList, photo.toDataURL()]);
+			setBackImageList((oldList) => [...oldList, photoObject]);
 		}
 
 		addSampleHandler(video, label);
@@ -190,7 +212,7 @@ export default function Training(props) {
 						props.forwardPhotoRef.current.getContext("2d");
 					ctxDriving.drawImage(tempImage, 0, 0);
 				};
-				tempImage.src = forwardImageList[index - 1];
+				tempImage.src = forwardImageList[index - 1].data;
 			}
 
 			setForwardImageList((images) =>
@@ -215,7 +237,7 @@ export default function Training(props) {
 						props.leftPhotoRef.current.getContext("2d");
 					ctxDriving.drawImage(tempImage, 0, 0);
 				};
-				tempImage.src = leftImageList[index - 1];
+				tempImage.src = leftImageList[index - 1].data;
 			}
 
 			setLeftImageList((images) =>
@@ -240,7 +262,7 @@ export default function Training(props) {
 						props.rightPhotoRef.current.getContext("2d");
 					ctxDriving.drawImage(tempImage, 0, 0);
 				};
-				tempImage.src = rightImageList[index - 1];
+				tempImage.src = rightImageList[index - 1].data;
 			}
 
 			setRightImageList((images) =>
@@ -265,13 +287,36 @@ export default function Training(props) {
 						props.backPhotoRef.current.getContext("2d");
 					ctxDriving.drawImage(tempImage, 0, 0);
 				};
-				tempImage.src = backImageList[index - 1];
+				tempImage.src = backImageList[index - 1].data;
 			}
+			console.log(backImageList[index].index);
+
+			deleteSampleHandler(
+				getSortedPhotoIndex(backImageList[index].index)
+			);
 
 			setBackImageList((images) =>
 				images.filter((image, imageindex) => imageindex !== index)
 			);
 		}
+	};
+
+	const getSortedPhotoIndex = (photoIndex) => {
+		const mergedList = [
+			...forwardImageList,
+			...leftImageList,
+			...rightImageList,
+			...backImageList,
+		].sort((a, b) => a.index - b.index);
+		console.log(mergedList);
+
+		const resultArray = mergedList.findIndex(
+			(image) => image.index === photoIndex
+		);
+
+		console.log(resultArray);
+
+		return resultArray;
 	};
 
 	const handleShowAllPhotos = (position) => {

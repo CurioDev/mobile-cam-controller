@@ -32,6 +32,10 @@ export const addSampleHandler = (camImg, label) => {
 	processedImg.dispose();
 };
 
+export const deleteSampleHandler = (imageIndex) => {
+	datasetController.deleteExample(imageIndex);
+};
+
 export const train = async (
 	userLearningRate,
 	userBatchSize,

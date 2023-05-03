@@ -12,16 +12,38 @@ export class DatasetController {
 			// disposed.
 			this.xs = tf.keep(example);
 			this.ys = tf.keep(y);
+			console.log(this.xs);
+			console.log(this.ys);
 		} else {
 			const oldX = this.xs;
 			this.xs = tf.keep(oldX.concat(example, 0));
 
 			const oldY = this.ys;
 			this.ys = tf.keep(oldY.concat(y, 0));
+			console.log(this.xs);
+			console.log(this.ys);
 
 			oldX.dispose();
 			oldY.dispose();
 			y.dispose();
 		}
+	}
+
+	deleteExample(imageIndex) {
+		// TO DO => The slice and concat works strange
+		const oldX = this.xs;
+		const xsLeft = oldX.slice(0, imageIndex + 1);
+		const xsRight = oldX.slice(imageIndex + 2);
+
+		this.xs = tf.keep(xsLeft.concat(xsRight));
+
+		const oldY = this.ys;
+		const ysLeft = oldY.slice(0, imageIndex + 1);
+		const ysRight = oldY.slice(imageIndex + 2);
+
+		this.ys = tf.keep(ysLeft.concat(ysRight));
+
+		console.log(this.xs);
+		console.log(this.ys);
 	}
 }

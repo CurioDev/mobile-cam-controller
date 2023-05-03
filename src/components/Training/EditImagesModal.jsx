@@ -7,16 +7,6 @@ import {
 	Modal,
 	Row,
 } from "react-bootstrap";
-import {
-	Chart as ChartJS,
-	CategoryScale,
-	LinearScale,
-	PointElement,
-	LineElement,
-	Title,
-	Tooltip,
-	Legend,
-} from "chart.js/auto";
 
 export default function EditImagesModal(props) {
 	return (
@@ -40,7 +30,7 @@ export default function EditImagesModal(props) {
 							{props.imageList.map((image, index) => (
 								<Col key={index} style={{ marginTop: "10px" }}>
 									<Card>
-										<Image src={image} />
+										<Image src={image.data} />
 										<Button
 											onClick={() =>
 												props.deleteSample(index)
