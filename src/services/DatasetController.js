@@ -32,14 +32,14 @@ export class DatasetController {
 	deleteExample(imageIndex) {
 		// TO DO => The slice and concat works strange
 		const oldX = this.xs;
-		const xsLeft = oldX.slice(0, imageIndex + 1);
-		const xsRight = oldX.slice(imageIndex + 2);
+		const xsLeft = oldX.slice(0, imageIndex);
+		const xsRight = oldX.slice(imageIndex + 1);
 
 		this.xs = tf.keep(xsLeft.concat(xsRight));
 
 		const oldY = this.ys;
-		const ysLeft = oldY.slice(0, imageIndex + 1);
-		const ysRight = oldY.slice(imageIndex + 2);
+		const ysLeft = oldY.slice(0, imageIndex);
+		const ysRight = oldY.slice(imageIndex + 1);
 
 		this.ys = tf.keep(ysLeft.concat(ysRight));
 

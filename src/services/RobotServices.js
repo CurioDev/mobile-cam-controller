@@ -34,17 +34,17 @@ export const moveCar = (labelId) => {
 };
 
 const goForward = () => {
-	device.UART.write("go(100, 100)\n", () => {});
+	device.UART.write("go(1000, 1000, 7000)\n", () => {});
 };
 
 const goBack = () => {
-	device.UART.write("go(-100, -100)\n", () => {});
+	device.UART.write("go(-1000, -1000, 7000)\n", () => {});
 };
 
 const goLeft = () => {
-	device.UART.write("go(100, 0)\n", () => {});
+	device.UART.write("go(1000, 0, 7000)\n", () => {});
 };
 
 const goRigth = () => {
-	device.UART.write("go(0, 100)\n", () => {});
+	device.UART.write("go(0, 1000, 7000)\n", () => {});
 };
