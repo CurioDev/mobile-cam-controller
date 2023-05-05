@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/mobile-cam-controller/static/css/main.e72bf510.css",
-    "main.js": "/mobile-cam-controller/static/js/main.0314beff.js",
+    "main.js": "/mobile-cam-controller/static/js/main.fb20da1e.js",
     "index.html": "/mobile-cam-controller/index.html",
     "main.e72bf510.css.map": "/mobile-cam-controller/static/css/main.e72bf510.css.map",
-    "main.0314beff.js.map": "/mobile-cam-controller/static/js/main.0314beff.js.map"
+    "main.fb20da1e.js.map": "/mobile-cam-controller/static/js/main.fb20da1e.js.map"
   },
   "entrypoints": [
     "static/css/main.e72bf510.css",
-    "static/js/main.0314beff.js"
+    "static/js/main.fb20da1e.js"
   ]
 }
