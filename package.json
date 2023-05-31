@@ -1,7 +1,6 @@
 {
 	"name": "mobile-cam-controller",
 	"version": "0.1.0",
-	"homepage": "https://claretb.github.io/mobile-cam-controller/",
 	"private": true,
 	"dependencies": {
 		"@espruino-tools/core": "^1.2.13",
