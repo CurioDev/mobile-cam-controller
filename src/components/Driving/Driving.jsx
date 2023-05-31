@@ -21,7 +21,7 @@ export default function Driving(props) {
 				let labelId = await predict(videoRef.current);
 				setPredictedLabel(labelId);
 				if (isConnected) {
-					moveCar(labelId);
+					moveCar(labelId, props.sendMessage);
 				}
 			}, 1000);
 		}
@@ -37,10 +37,11 @@ export default function Driving(props) {
 
 	const handleConnect = () => {
 		if (!isConnected) {
-			connect();
+			connect(props.sendMessage);
 		} else {
-			disconnect();
+			disconnect(props.sendMessage);
 		}
+
 		setIsConnected(!isConnected);
 	};
 

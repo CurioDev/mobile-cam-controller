@@ -5,7 +5,7 @@ import { Tab, Tabs, Alert } from "react-bootstrap";
 import Training from "./Training/Training";
 import Driving from "./Driving/Driving";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 	const forwardPhotoRef = useRef(null);
 	const leftPhotoRef = useRef(null);
 	const rightPhotoRef = useRef(null);
@@ -72,6 +72,7 @@ export default function Dashboard() {
 						rightPhotoRef={rightPhotoRef}
 						backPhotoRef={backPhotoRef}
 						setShowInstructionsAlert={setShowInstructionsAlert}
+						sendMessage={props.sendMessage}
 					/>
 				</Tab>
 			</Tabs>
