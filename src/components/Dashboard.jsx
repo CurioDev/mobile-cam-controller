@@ -22,28 +22,28 @@ export default function Dashboard(props) {
 			>
 				<Alert.Heading>Welcome to Cam Controller!</Alert.Heading>
 				<hr />
-				<p>
-					- This app allows you to drive the robot using your camera.
-				</p>
+				<p>- This app allows you to drive Curio using your camera.</p>
 				<p>
 					- Adjust your camera to the images you will use for forward,
 					backward, turn right and turn left commands and add samples
 					using the ADD SAMPLE buttons.
 				</p>
+				<p>- You can delete the images if you don't want them.</p>
 				<p>
 					- Adjust the parameters in the corners as you wish. If you
 					don't know what these parameters are, you can leave them as
 					default.
 				</p>
 				<p>- Train the model with the TRAIN button.</p>
+				<p>- Switch to the "Driving" tab and connect to Curio.</p>
 				<p>
-					- Switch to the "Driving" tab and press the "START" button.
+					- Press Start button and drive Curio as you wish with your
+					camera!
 				</p>
-				<p>- Start directing the robot as you wish with your camera!</p>
 
 				<p>
-					- If the robot does not move as you want, retrain the model
-					by adding more examples in the "Training" tab..
+					- If Curio does not move as you want, retrain the model by
+					adding more examples in the "Training" tab..
 				</p>
 			</Alert>
 		);

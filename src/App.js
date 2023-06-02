@@ -11,7 +11,7 @@ const sendMessage = roomID
 			"message"
 	  )[0]
 	: undefined;
-console.log(sendMessage, roomID, queryParams);
+// console.log(sendMessage, roomID, queryParams);
 
 function App() {
 	init();

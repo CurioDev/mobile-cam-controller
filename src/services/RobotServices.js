@@ -69,11 +69,11 @@ const goForward = (sendMessage) => {
 	if (sendMessage) {
 		const moveData = {
 			type: 2,
-			data: { x: 1000, y: 1000, speed: 700 },
+			data: { x: 1000, y: 1000, speed: 600 },
 		};
 		sendMessage(moveData);
 	} else {
-		device.UART.write("go(1000, 1000, 700)\n", () => {});
+		device.UART.write("go(1000, 1000, 600)\n", () => {});
 	}
 };
 
@@ -81,11 +81,11 @@ const goBack = (sendMessage) => {
 	if (sendMessage) {
 		const moveData = {
 			type: 2,
-			data: { x: -1000, y: -1000, speed: 700 },
+			data: { x: -1000, y: -1000, speed: 600 },
 		};
 		sendMessage(moveData);
 	} else {
-		device.UART.write("go(-1000, -1000, 700)\n", () => {});
+		device.UART.write("go(-1000, -1000, 600)\n", () => {});
 	}
 };
 
@@ -93,11 +93,11 @@ const goLeft = (sendMessage) => {
 	if (sendMessage) {
 		const moveData = {
 			type: 2,
-			data: { x: 0, y: 1000, speed: 700 },
+			data: { x: 0, y: 1000, speed: 600 },
 		};
 		sendMessage(moveData);
 	} else {
-		device.UART.write("go(1000, 0, 700)\n", () => {});
+		device.UART.write("go(1000, 0, 600)\n", () => {});
 	}
 };
 
@@ -105,10 +105,10 @@ const goRigth = (sendMessage) => {
 	if (sendMessage) {
 		const moveData = {
 			type: 2,
-			data: { x: 1000, y: 0, speed: 700 },
+			data: { x: 1000, y: 0, speed: 600 },
 		};
 		sendMessage(moveData);
 	} else {
-		device.UART.write("go(0, 1000, 700)\n", () => {});
+		device.UART.write("go(0, 1000, 600)\n", () => {});
 	}
 };
